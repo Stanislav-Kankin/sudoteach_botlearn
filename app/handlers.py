@@ -1,13 +1,22 @@
+# import asyncio
 from aiogram import Router, F
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from aiogram.filters import CommandStart, Command, CommandObject
+from aiogram.enums import ChatAction
+
+import app.keyboards as kb
 
 router = Router()
 
 
 @router.message(CommandStart())
 async def cmd_start(message: Message) -> None:
-    await message.reply('Привет!')
+    await message.bot.send_chat_action(
+        chat_id=message.from_user.id,
+        action=ChatAction.TYPING
+    )
+    # await asyncio.sleep(2)
+    await message.reply('Привет!', reply_markup=kb.inline_main)
     await message.answer('Какие дела, бро?')
 
 
@@ -60,3 +69,15 @@ async def cmd_take(
     value1, value2 = command.args.split(' ', maxsplit=1)
     value3 = int(value1) + int(value2)
     await message.reply(f'Я сложил твои числа и получилось {value3}')
+
+
+@router.callback_query(F.data == 'basket')
+async def basket(callback: CallbackQuery) -> None:
+    await callback.answer('Выбрана корзина', show_alert=True)
+    await callback.message.answer('Корзина пуста')
+
+
+@router.callback_query(F.data == 'contact')
+async def contact(callback: CallbackQuery) -> None:
+    await callback.answer('WTF MATHER F*CKER?????')
+    await callback.message.answer('HEY GAY!')
