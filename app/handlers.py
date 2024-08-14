@@ -80,4 +80,4 @@ async def basket(callback: CallbackQuery) -> None:
 @router.callback_query(F.data == 'contact')
 async def contact(callback: CallbackQuery) -> None:
     await callback.answer('WTF MATHER F*CKER?????')
-    await callback.message.answer('HEY GAY!')
+    await callback.message.answer('HEY GAY!', reply_markup=await kb.catalog())

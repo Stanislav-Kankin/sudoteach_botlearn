@@ -1,6 +1,8 @@
 from aiogram.types import (
     ReplyKeyboardMarkup, KeyboardButton,
-    InlineKeyboardMarkup, InlineKeyboardButton)
+    InlineKeyboardMarkup, InlineKeyboardButton,)
+
+from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 
 
 main = ReplyKeyboardMarkup(keyboard=[
@@ -18,3 +20,17 @@ inline_main = InlineKeyboardMarkup(inline_keyboard=[
         callback_data='basket'
     )]
 ])
+
+
+async def catalog() -> None:
+    all_data = (
+        'Nissan', 'Lada', 'BMW',
+        'Lexus', 'China_cars',
+        'Motoroller', 'TEST'
+    )
+
+    keyboard = ReplyKeyboardBuilder()
+
+    for data in all_data:
+        keyboard.add(KeyboardButton(text=data))
+    return keyboard.adjust(2).as_markup(resize_keyboard=True)
